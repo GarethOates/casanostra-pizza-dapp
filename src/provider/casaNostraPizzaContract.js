@@ -13,3 +13,7 @@ export const getTotalPizzas = async () => {
 export const getPizzaById = async (id) => {
     return await contract.methods.pizzaList(id).call();
 }
+
+export const placeOrder = async (did, pizzaId, quantity) => {
+    return await contract.methods.placeOrder(did, pizzaId, quantity).call();
+}

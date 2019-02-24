@@ -1,8 +1,9 @@
 import { takeEvery, call, put } from "redux-saga/effects";
-import { getPizzaById, getTotalPizzas } from '../../provider/casaNostraPizzaContract'
+import { getPizzaById, getTotalPizzas, placeOrder } from '../../provider/casaNostraPizzaContract'
 
 export function* pizzaSagas() {
     yield takeEvery('GET_PIZZAS', getPizzas);
+    yield takeEvery('ORDER_PIZZA', orderPizza);
 }
 
 export function* getPizzas() {
@@ -23,5 +24,16 @@ export function* getPizzas() {
     }
 
     yield put({ type: 'GOT_PIZZAS', payload: pizzas });
+}
 
+export function* orderPizza(payload) {
+    const { did, pizzaId, quantity } = payload;
+
+    yield put({type: 'PLACING_ORDER'});
+
+    const result = yield call(placeOrder, did, pizzaId, quantity);
+
+    console.log('Result: ', result);
+
+    yield put({type: 'PIZZA_ORDERED', payload: result});
 }

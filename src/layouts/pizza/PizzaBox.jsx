@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import OrderButton from './OrderButton'
 
 const StyledPizzaBox = styled.div`
     display: inline-flex;
@@ -38,25 +39,19 @@ const StyledPizzaBox = styled.div`
         color: black;
     }
 
-    .order {
-        background: green;
-        color: white;
-        margin: 0.5rem;
-    }
-
     .price {
         margin: 0.5rem;
         color: black;
     }
 `
-const pizzaBox = ({ image, name, description, price }) => {
+const pizzaBox = ({ id, image, name, description, price}) => {
     return (
         <StyledPizzaBox>
             <div className="name">{name}</div>
             <img src={image} alt="pizza" /><br/>
             <div className="description">{description}</div>
             <div className="price">Ξ{price}</div>
-            <button className="order">Order Now</button>
+            <OrderButton  id={id}>Order Now</OrderButton>
         </StyledPizzaBox>
     )
 }

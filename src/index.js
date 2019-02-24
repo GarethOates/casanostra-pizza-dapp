@@ -9,6 +9,7 @@ import { UserIsAuthenticated } from './util/wrappers.js'
 import App from './App'
 import Home from './layouts/home/Home'
 import Profile from './user/layouts/profile/Profile'
+import Pizza from './layouts/pizza/Pizza'
 
 // Redux Store
 import store from './store/store'
@@ -21,6 +22,7 @@ ReactDOM.render((
         <Route path="/" component={App}>
           <IndexRoute component={Home} />
           <Route path="profile" component={UserIsAuthenticated(Profile)} />
+          <Route path="order" component={UserIsAuthenticated(Pizza)} />
         </Route>
       </Router>
     </Provider>

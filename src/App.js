@@ -32,7 +32,7 @@ class App extends Component {
     return (
       <div className="App">
         <nav className="navbar pure-menu pure-menu-horizontal">
-          <Link to="/" className="pure-menu-heading pure-menu-link">Casa Nostra Pizza</Link>
+          <Link to="/order" className="pure-menu-heading pure-menu-link">Casa Nostra Pizza</Link>
           <ul className="pure-menu-list navbar-right">
             <OnlyGuestLinks />
             <OnlyAuthLinks />
