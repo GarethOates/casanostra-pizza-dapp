@@ -1,10 +1,12 @@
-import {web3} from '../util/connectors';
+import {web3, uport} from '../util/connectors';
 import CasaNostraPizzaContract from '../build/contracts/CasaNostraPizza.json';
 
 const networkId = "1550963140489";
 const abi = CasaNostraPizzaContract.abi;
 const address = CasaNostraPizzaContract.networks[networkId].address;
+
 const contract = web3.eth.Contract(abi, address);
+const uContract =uport.contract(abi).at(address);
 
 export const getTotalPizzas = async () => {
     return await contract.methods.totalPizzas.call();
@@ -15,5 +17,8 @@ export const getPizzaById = async (id) => {
 }
 
 export const placeOrder = async (did, pizzaId, quantity) => {
-    return await contract.methods.placeOrder(did, pizzaId, quantity).call();
+    const pizza = await getPizzaById(pizzaId);
+    const total = pizza.price * quantity;
+
+    return await uContract.placeOrder(did, pizzaId, quantity);
 }
