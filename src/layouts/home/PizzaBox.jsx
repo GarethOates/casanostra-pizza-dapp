@@ -4,9 +4,9 @@ import styled from 'styled-components'
 const StyledPizzaBox = styled.div`
     display: inline-flex;
     flex-direction: column;
+    width: 15%;
     flex-wrap: wrap;
     margin: 1rem;
-    width: 15%;
     align-items: center;
     justify-content: stretch;
     background-color: white;
@@ -17,13 +17,25 @@ const StyledPizzaBox = styled.div`
         height: 5rem;
         margin: 1rem;
     }
+
+    .name {
+        background: red;
+        color: white;
+        font-weight: bold;
+        width: 100%
+        text-align: center;
+    }
+
+    .description {
+        padding: 0.5rem;
+    }
 `
 const pizzaBox = ({ image, name, description }) => {
     return (
         <StyledPizzaBox>
             <img src={image} alt="pizza" /><br/>
-            <p>{name}</p>
-            <p>{description}</p>
+            <div className="name">{name}</div>
+            <div className="description">{description}</div>
         </StyledPizzaBox>
     )
 }
