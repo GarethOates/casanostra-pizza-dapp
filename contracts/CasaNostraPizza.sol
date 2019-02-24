@@ -52,7 +52,7 @@ contract CasaNostraPizza is Ownable, Pausable {
     /// @dev Initialise dummy user and pizza
     constructor() public {
         totalUsers = 1; // 1 dummy user hard-coded
-        totalPizzas = 1; // 1 dummy pizza hard-coded
+        totalPizzas = 2; // 2 dummy pizza hard-coded
 
         userIndex["did:example:abcdefg12345"] = 1;
         userList[1].name = "Gareth Oates";
@@ -65,6 +65,12 @@ contract CasaNostraPizza is Ownable, Pausable {
         pizzaList[1].imageHash = "http://clipart-library.com/images/qiBALM9aT.png";
         pizzaList[1].price = 2;
         pizzaList[1].exists = true;
+
+        pizzaList[2].name = "Meat Feast";
+        pizzaList[2].imageHash = "http://clipart-library.com/images/qiBALM9aT.png";
+        pizzaList[2].description = "Fullverdig vegansk pizza sprinklet med smaksrik vegansk chili aioli. Toppet med pulled Oumph!, rødløk, tomat og purre.";
+        pizzaList[2].price = 3;
+        pizzaList[2].exists = true;
     }
 
     /// @title userLoggedIn
