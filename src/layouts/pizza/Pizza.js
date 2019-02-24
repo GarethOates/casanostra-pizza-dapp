@@ -10,7 +10,13 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-const mapStateToProps = (state) => state.pizza
+const mapStateToProps = (state) => {
+    return {
+        user: state.user,
+        pizza: state.pizza
+    }
+}
+
 
 const ShowLoading = (props) => {
     return (
@@ -38,7 +44,7 @@ class Pizza extends Component {
     }
 
     render() {
-        const pizzaCells = this.props.data.map((pizza, index) => {
+        const pizzaCells = this.props.pizza.data.map((pizza, index) => {
             return (
                 <PizzaBox
                     key={index}
@@ -55,11 +61,12 @@ class Pizza extends Component {
                 <div className="pure-g">
                     <div className="pure-u-1-1">
                         <h1>Casa Nostra Pizzas</h1>
-                        {this.props.isLoading ?
+                        <h3>Welcome back, { this.props.user.data.name }</h3>
+                        {this.props.pizza.isLoading ?
                             <ShowLoading /> :
                             ''
                         }
-                        {this.props.placingOrder ?
+                        {this.props.pizza.placingOrder ?
                             <ShowOrdering /> :
                             <ShowPizzas />
                         }
