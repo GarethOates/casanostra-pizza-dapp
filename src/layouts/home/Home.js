@@ -10,6 +10,8 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
+const mapStateToProps = (state) => state.pizza
+
 const ShowLoading = (props) => {
   return (
     <p>Loading Pizzas...</p>
@@ -60,6 +62,6 @@ class Home extends Component {
 }
 
 export default connect(
-  (state) => state.pizza,
+  mapStateToProps,
   mapDispatchToProps
 )(Home)
