@@ -1,34 +1,47 @@
 import React, { Component } from 'react'
-import PizzaBox from './PizzaBox.jsx';
-import { getTotalPizzas, getPizzaById } from '../../provider/casaNostraPizzaContract';
+import PizzaBox from '../pizza/PizzaBox.jsx'
+import { connect } from 'react-redux'
 
-const pizzas = [];
+const mapDispatchToProps = (dispatch) => {
+  return {
+      onComponentLoaded: () => {
+        dispatch({ type: 'GET_PIZZAS'});
+      }
+  }
+}
+
+const ShowLoading = (props) => {
+  return (
+    <p>Loading Pizzas...</p>
+  )
+}
+
+const ShowPizzas = (props) => {
+  return (
+    (
+      <p>Please place your order:</p>
+    )
+  )
+}
 
 class Home extends Component {
-
-  async componentDidMount() {
-    const pizzaCount = await getTotalPizzas();
-
-    for(let i = 1; i <= pizzaCount; i++) {
-      const pizza = await getPizzaById(i);
-
-      pizzas.push({
-        name: pizza.name,
-        description: pizza.description,
-        image: pizza.imageHash,
-        price: pizza.price
-      });
-    }
+  componentDidMount() {
+    this.props.onComponentLoaded();
   }
 
   render() {
-    const pizzaCells = pizzas.map((pizza, index) => {
+    const { data } = this.props;
+
+    console.log(data);
+
+    const pizzaCells = data.map((pizza, index) => {
       return (
       <PizzaBox
         key={index}
         image={pizza.image}
         name={pizza.name}
         description={pizza.description}
+        price={pizza.price}
       />)
     });
 
@@ -36,9 +49,13 @@ class Home extends Component {
       <main className="container">
         <div className="pure-g">
           <div className="pure-u-1-1">
-            <h1>Welcome to Casa Nostra Pizzas</h1>
-            <p>Please place your order:</p>
-            {pizzaCells}
+            <h1>Casa Nostra Pizzas</h1>
+            <h3>Welcome</h3>
+            { this.props.isLoading ?
+              <ShowLoading /> :
+              <ShowPizzas />
+            }
+            { pizzaCells }
           </div>
         </div>
       </main>
@@ -46,4 +63,7 @@ class Home extends Component {
   }
 }
 
-export default Home
+export default connect(
+  (state) => state.pizza,
+  mapDispatchToProps
+)(Home)

@@ -12,7 +12,7 @@ import Dashboard from './layouts/dashboard/Dashboard'
 import Profile from './user/layouts/profile/Profile'
 
 // Redux Store
-import store from './store'
+import store from './store/store'
 
 const history = syncHistoryWithStore(browserHistory, store)
 
