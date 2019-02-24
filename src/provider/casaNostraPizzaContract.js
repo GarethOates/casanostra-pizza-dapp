@@ -1,7 +1,7 @@
 import {web3, uport} from '../util/connectors';
 import CasaNostraPizzaContract from '../build/contracts/CasaNostraPizza.json';
 
-const networkId = "1550963140489";
+const networkId = "4";
 const abi = CasaNostraPizzaContract.abi;
 const address = CasaNostraPizzaContract.networks[networkId].address;
 
@@ -20,5 +20,5 @@ export const placeOrder = async (did, pizzaId, quantity) => {
     const pizza = await getPizzaById(pizzaId);
     const total = pizza.price * quantity;
 
-    return await uContract.placeOrder(did, pizzaId, quantity);
+    return await uContract.placeOrder(did, pizzaId, quantity, { value: total ** 18 });
 }
