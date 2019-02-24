@@ -1,10 +1,27 @@
 import React, { Component } from 'react'
 import PizzaBox from './PizzaBox.jsx';
-import {pizzas} from './dummyData';
+import { getTotalPizzas, getPizzaById } from '../../provider/casaNostraPizzaContract';
+
+const pizzas = [];
 
 class Home extends Component {
-  render() {
 
+  async componentDidMount() {
+    const pizzaCount = await getTotalPizzas();
+
+    for(let i = 1; i <= pizzaCount; i++) {
+      const pizza = await getPizzaById(i);
+
+      pizzas.push({
+        name: pizza.name,
+        description: pizza.description,
+        image: pizza.imageHash,
+        price: pizza.price
+      });
+    }
+  }
+
+  render() {
     const pizzaCells = pizzas.map((pizza, index) => {
       return (
       <PizzaBox
