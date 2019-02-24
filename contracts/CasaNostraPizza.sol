@@ -10,6 +10,7 @@ contract CasaNostraPizza is Ownable, Pausable {
         string description;
         string imageHash;
         uint32 price;
+        bool exists;
     }
 
     struct Order {
@@ -62,6 +63,7 @@ contract CasaNostraPizza is Ownable, Pausable {
         pizzaList[1].name = "Chicago Town";
         pizzaList[1].description = "BBQ-marinert kyllingfilet, BBQ-saus, bacon, purre og rødløk. Toppes med bladpersille og nykvernet pepper etter steking.";
         pizzaList[1].imageHash = "http://clipart-library.com/images/qiBALM9aT.png";
+        pizzaList[1].exists = true;
     }
 
     /// @dev User logged in
@@ -113,7 +115,7 @@ contract CasaNostraPizza is Ownable, Pausable {
 
     modifier verifyOrder(string memory _did, uint32 _pizzaId, uint32 _quantity) {
         require(userIndex[_did] != 0, "User not recognised");
-        require(_pizzaId > 0, "No Pizza Found");
+        require(pizzaList[_pizzaId].exists, "No Pizza Found");
         require(_quantity > 0, "Must order at least 1 pizza");
         require(msg.value >= pizzaList[_pizzaId].price * _quantity, "Ether sent does not cover cost of order");
 
