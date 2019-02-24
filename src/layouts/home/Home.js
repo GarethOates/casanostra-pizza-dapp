@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      onComponentLoaded: () => {
+      onComponentDidMount: () => {
         dispatch({ type: 'GET_PIZZAS'});
       }
   }
@@ -26,15 +26,11 @@ const ShowPizzas = (props) => {
 
 class Home extends Component {
   componentDidMount() {
-    this.props.onComponentLoaded();
+    this.props.onComponentDidMount();
   }
 
   render() {
-    const { data } = this.props;
-
-    console.log(data);
-
-    const pizzaCells = data.map((pizza, index) => {
+    const pizzaCells = this.props.data.map((pizza, index) => {
       return (
       <PizzaBox
         key={index}
