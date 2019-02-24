@@ -63,6 +63,7 @@ contract CasaNostraPizza is Ownable, Pausable {
         pizzaList[1].name = "Chicago Town";
         pizzaList[1].description = "BBQ-marinert kyllingfilet, BBQ-saus, bacon, purre og rødløk. Toppes med bladpersille og nykvernet pepper etter steking.";
         pizzaList[1].imageHash = "http://clipart-library.com/images/qiBALM9aT.png";
+        pizzaList[1].price = 2;
         pizzaList[1].exists = true;
     }
 
@@ -138,4 +139,7 @@ contract CasaNostraPizza is Ownable, Pausable {
         emit balanceNowUpdated(address(this).balance);
     }
 
+    function kill() external onlyOwner {
+        selfdestruct(msg.sender);
+    }
 }
