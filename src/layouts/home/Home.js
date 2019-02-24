@@ -48,7 +48,6 @@ class Home extends Component {
         <div className="pure-g">
           <div className="pure-u-1-1">
             <h1>Casa Nostra Pizzas</h1>
-            <h3>Welcome</h3>
             { this.props.isLoading ?
               <ShowLoading /> :
               <ShowPizzas />
