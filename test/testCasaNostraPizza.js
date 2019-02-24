@@ -16,13 +16,24 @@ contract('CasaNostraPizza', async (accounts) => {
         await contract.kill();
     });
 
-    it("should deploy successfully", async () => {
-        const pizza = await contract.pizzaList.call(1);
-
-        const expected = "Chicago Town";
-        const actual = pizza.name;
+    it("should store number of pizzas", async () => {
+        const expected = 1;
+        const actual = await contract.totalPizzas();
 
         assert.equal(expected, actual);
+    });
+
+    it("should return valid pizzas by id", async () => {
+        const pizzaCount = await contract.totalPizzas();
+        const pizzas = [];
+
+        for(i = 1; i <= pizzaCount; i++) {
+            const pizza = await contract.pizzaList.call(i);
+
+            pizzas.push(pizza);
+        }
+
+        assert.equal(pizzas.length, pizzaCount);
     });
 
     it("should add a user with unknown did", async () => {
@@ -93,5 +104,4 @@ contract('CasaNostraPizza', async (accounts) => {
 
         truffleAssert.eventEmitted(result, "orderPlaced");
     });
-
 });
