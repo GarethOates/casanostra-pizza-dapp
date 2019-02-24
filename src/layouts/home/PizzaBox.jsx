@@ -11,6 +11,11 @@ const StyledPizzaBox = styled.div`
     justify-content: stretch;
     background-color: white;
     border: solid 1px rgba(0,0,0,0.56);
+    transition: all .2s ease-in-out;
+
+    &:hover {
+        transform: scale(1.1);
+    }
 
     & img {
         display: block;
@@ -29,6 +34,13 @@ const StyledPizzaBox = styled.div`
     .description {
         padding: 0.5rem;
     }
+
+    .order {
+        background: green;
+        color: white;
+        margin: 0.5rem;
+
+    }
 `
 const pizzaBox = ({ image, name, description }) => {
     return (
@@ -36,6 +48,7 @@ const pizzaBox = ({ image, name, description }) => {
             <img src={image} alt="pizza" /><br/>
             <div className="name">{name}</div>
             <div className="description">{description}</div>
+            <button className="order">Order Now</button>
         </StyledPizzaBox>
     )
 }
