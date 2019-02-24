@@ -20,5 +20,5 @@ export const placeOrder = async (did, pizzaId, quantity) => {
     const pizza = await getPizzaById(pizzaId);
     const total = pizza.price * quantity;
 
-    return await uContract.placeOrder(did, pizzaId, quantity, { value: total ** 18 });
+    return await uContract.placeOrder(did, pizzaId, quantity);
 }
