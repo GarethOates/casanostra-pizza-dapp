@@ -2,7 +2,6 @@ const truffleAssert = require('truffle-assertions');
 const CasaNostraPizza = artifacts.require("./CasaNostraPizza.sol");
 
 const validDid = "did:example:abcdefg12345";
-const validName = "Gareth Oates";
 const validPizzaId = 1;
 
 contract('CasaNostraPizza', async (accounts) => {
@@ -17,7 +16,7 @@ contract('CasaNostraPizza', async (accounts) => {
     });
 
     it("should store number of pizzas", async () => {
-        const expected = 1;
+        const expected = 2;
         const actual = await contract.totalPizzas();
 
         assert.equal(expected, actual);
@@ -37,38 +36,33 @@ contract('CasaNostraPizza', async (accounts) => {
     });
 
     it("should add a user with unknown did", async () => {
-        const result = await contract.userLoggedIn(
-            "did:example:23354553",
-            "Helene Kvellestad Isaksen"
-        );
+        const result = await contract.userLoggedIn("did:example:23354553");
 
         truffleAssert.eventEmitted(result, "newUserRegistered");
     });
 
     it("should recognise when a known user logs in", async () => {
-        const result = await contract.userLoggedIn(
-            validDid,
-            validName
-        );
+        const result = await contract.userLoggedIn(validDid);
 
         truffleAssert.eventEmitted(result, "existingUserLoggedIn");
     });
 
-    it("should stop an unknown user placing an order", async () => {
-        await truffleAssert.reverts(
-            contract.placeOrder(
-                "did:notfound:21234",
-                0,
-                1
-            ), "User not recognised"
-        );
+    it("should signup an unknown user placing an order", async () => {
+        const result = await contract.placeOrder(
+            "did:notfound:21234",
+            1,
+            1,
+            { from: accounts[0], value: 5 });
+
+        truffleAssert.eventEmitted(result, "newUserRegistered");
+        truffleAssert.eventEmitted(result, "orderPlaced");
     });
 
     it("should stop an order for an unknown pizza", async () => {
         await truffleAssert.reverts(
             contract.placeOrder(
                 validDid,
-                2,
+                3,
                 1
             ), "No Pizza Found"
         );
