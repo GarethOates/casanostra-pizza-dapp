@@ -24,7 +24,6 @@ contract CasaNostraPizza is Ownable, Pausable {
     }
 
     struct User {
-        string name;
         string did;
         uint32 totalOrders;
         uint32 totalLogins;
@@ -76,11 +75,10 @@ contract CasaNostraPizza is Ownable, Pausable {
     /// @title userLoggedIn
     /// @dev User logged in
     /// @param _did Unique identifier for user
-    /// @param _name Name of the user
-    function userLoggedIn(string memory _did, string memory _name) public {
+    function userLoggedIn(string memory _did) public {
         if (userIndex[_did] != 0) {
             userList[userIndex[_did]].totalLogins++;
-            emit existingUserLoggedIn(_did, _name);
+            emit existingUserLoggedIn(_did);
 
             return;
         }
@@ -88,12 +86,11 @@ contract CasaNostraPizza is Ownable, Pausable {
         totalUsers++;
 
         userIndex[_did] = totalUsers;
-        userList[totalUsers].name = _name;
         userList[totalUsers].did = _did;
         userList[totalUsers].totalOrders = 0;
         userList[totalUsers].totalLogins += 1;
 
-        emit newUserRegistered(_did, _name);
+        emit newUserRegistered(_did);
 
     }
 
@@ -105,10 +102,13 @@ contract CasaNostraPizza is Ownable, Pausable {
     /// @return bool Order Succeeded
     function placeOrder(string memory _did, uint32 _pizzaId, uint32 _quantity)
     public payable returns (bool) {
-        require(userIndex[_did] != 0, "User not recognised");
         require(pizzaList[_pizzaId].exists, "No Pizza Found");
         require(_quantity > 0, "Must order at least 1 pizza");
         require(msg.value >= pizzaList[_pizzaId].price * _quantity, "Ether sent does not cover cost of order");
+
+        if (userIndex[_did] == 0) {
+            userLoggedIn(_did);
+        }
 
         User memory user = userList[userIndex[_did]];
         user.totalOrders++;
