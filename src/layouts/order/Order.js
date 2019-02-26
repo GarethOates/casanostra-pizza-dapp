@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 const mapDispatchToProps = (dispatch) => {
     return {
         onComponentDidMount: () => {
-            dispatch({ type: 'GET_ORDERS' });
+            dispatch({ type: 'GET_ORDERS', payload: this.props.user.data.did });
         }
     }
 }

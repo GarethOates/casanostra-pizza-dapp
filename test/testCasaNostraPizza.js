@@ -88,6 +88,12 @@ contract('CasaNostraPizza', async (accounts) => {
         )
     });
 
+    it("should not return order ids for an unknown user", async () => {
+        await truffleAssert.reverts(
+            contract.getOrderIdsForUser("did:invalid:1234")
+        )
+    });
+
     it("should accept a valid order", async () => {
         const result = await contract.placeOrder(
             validDid,
@@ -97,5 +103,18 @@ contract('CasaNostraPizza', async (accounts) => {
         )
 
         truffleAssert.eventEmitted(result, "orderPlaced");
+    });
+
+    it("should return order Ids for a user given a did", async () => {
+        await contract.placeOrder(
+            validDid,
+            validPizzaId,
+            1,
+            { from: accounts[0], value: 2 * (10 ** 18) }
+        )
+
+        const orderIds = await contract.getOrderIdsForUser(validDid);
+
+        assert.equal(1, orderIds.length);
     });
 });

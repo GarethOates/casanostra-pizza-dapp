@@ -1,5 +1,4 @@
 pragma solidity ^0.5.0;
-pragma experimental ABIEncoderV2;
 
 import "../node_modules/openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "../node_modules/openzeppelin-solidity/contracts/lifecycle/Pausable.sol";
@@ -15,8 +14,8 @@ contract CasaNostraPizza is Ownable, Pausable {
     }
 
     struct Order {
-        User user;
-        Pizza pizza;
+        string userDid;
+        uint32 pizzaId;
         uint32 quantity;
         uint total;
         uint orderPlacedTime;
@@ -31,7 +30,7 @@ contract CasaNostraPizza is Ownable, Pausable {
     }
 
     mapping(uint32 => Pizza) public pizzaList;
-    mapping(uint32 => Order) private orderList;
+    mapping(uint32 => Order) public orderList;
 
     mapping(string => uint32) private userIndex; // 0 if new user
     mapping(uint32 => User) private userList; // 0 means no user. 1st user index 1.
@@ -96,12 +95,14 @@ contract CasaNostraPizza is Ownable, Pausable {
     /// @title getOrdersForUser
     /// @dev Gets the number of orders a particular user has placed
     /// @param _did Unique identifier of the user
-    function getOrdersForUser(string memory _did) public view returns (Order[] memory orders) {
+    function getOrderIdsForUser(string memory _did) public view returns (uint32[] memory orderIds) {
+        require(userIndex[_did] != 0, "Cannot fetch orders for unknown user");
+
         uint32 index = 0;
 
         for (uint32 i = 0; i < totalOrders; i++) {
-            if (keccak256(abi.encode(orderList[i].user.did)) == keccak256(abi.encode(_did))) {
-                orders[index] = orderList[i];
+            if (keccak256(abi.encode(orderList[i].userDid)) == keccak256(abi.encode(_did))) {
+                orderIds[index] = i;
                 index++;
             }
         }
@@ -114,7 +115,7 @@ contract CasaNostraPizza is Ownable, Pausable {
     /// @param _quantity Number of pizzas ordered
     /// @return bool Order Succeeded
     function placeOrder(string memory _did, uint32 _pizzaId, uint32 _quantity)
-    public payable returns (bool) {
+    public payable {
         require(pizzaList[_pizzaId].exists, "No Pizza Found");
         require(_quantity > 0, "Must order at least 1 pizza");
         require(msg.value >= pizzaList[_pizzaId].price * _quantity, "Ether sent does not cover cost of order");
@@ -123,22 +124,17 @@ contract CasaNostraPizza is Ownable, Pausable {
             userLoggedIn(_did);
         }
 
-        User memory user = userList[userIndex[_did]];
-        user.totalOrders++;
-
         Pizza memory pizza = pizzaList[_pizzaId];
 
         totalOrders++;
-        orderList[totalOrders].user = user;
-        orderList[totalOrders].pizza = pizza;
+        orderList[totalOrders].userDid = _did;
+        orderList[totalOrders].pizzaId = _pizzaId;
         orderList[totalOrders].quantity = _quantity;
         orderList[totalOrders].total = pizza.price * _quantity;
         orderList[totalOrders].orderPlacedTime = block.timestamp;
         orderList[totalOrders].orderReceived = false;
 
         emit orderPlaced(totalOrders);
-
-        return true;
     }
 
     /// @dev Fallback function
