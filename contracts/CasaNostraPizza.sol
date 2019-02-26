@@ -1,4 +1,5 @@
 pragma solidity ^0.5.0;
+pragma experimental ABIEncoderV2;
 
 import "../node_modules/openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "../node_modules/openzeppelin-solidity/contracts/lifecycle/Pausable.sol";
@@ -90,6 +91,20 @@ contract CasaNostraPizza is Ownable, Pausable {
         userList[totalUsers].totalLogins += 1;
 
         emit newUserRegistered(_did);
+    }
+
+    /// @title getOrdersForUser
+    /// @dev Gets the number of orders a particular user has placed
+    /// @param _did Unique identifier of the user
+    function getOrdersForUser(string memory _did) public view returns (Order[] memory orders) {
+        uint32 index = 0;
+
+        for (uint32 i = 0; i < totalOrders; i++) {
+            if (keccak256(abi.encode(orderList[i].user.did)) == keccak256(abi.encode(_did))) {
+                orders[index] = orderList[i];
+                index++;
+            }
+        }
     }
 
     /// @title placeOrder

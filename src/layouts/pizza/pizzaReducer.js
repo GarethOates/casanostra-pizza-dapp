@@ -18,19 +18,6 @@ const pizzaReducer = (state = initialState, action) => {
         })
     }
 
-    if (action.type === 'PLACING_ORDER') {
-        return Object.assign({}, state, {
-            placingOrder: true
-        })
-    }
-
-    if (action.type === 'PIZZA_ORDERED') {
-        return Object.assign({}, state, {
-            order: action.payload,
-            placingOrder: false
-        })
-    }
-
     return state
 }
 
