@@ -41,8 +41,8 @@ contract CasaNostraPizza is Ownable, Pausable {
     uint32 public totalUsers;
 
     // Events
-    event newUserRegistered(string did, string name);
-    event existingUserLoggedIn(string did, string name);
+    event newUserRegistered(string did);
+    event existingUserLoggedIn(string did);
     event orderPlaced(uint orderId);
     event balanceNowUpdated(uint256 newBalance);
 
@@ -54,7 +54,6 @@ contract CasaNostraPizza is Ownable, Pausable {
         totalPizzas = 2; // 2 dummy pizza hard-coded
 
         userIndex["did:example:abcdefg12345"] = 1;
-        userList[1].name = "Gareth Oates";
         userList[1].did = "did:example:abcdefg12345";
         userList[1].totalOrders = 0;
         userList[1].totalLogins = 1;
