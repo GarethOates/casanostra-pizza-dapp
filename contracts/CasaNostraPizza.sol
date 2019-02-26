@@ -9,7 +9,7 @@ contract CasaNostraPizza is Ownable, Pausable {
         string name;
         string description;
         string imageHash;
-        uint32 price;
+        uint price;
         bool exists;
     }
 
@@ -17,7 +17,7 @@ contract CasaNostraPizza is Ownable, Pausable {
         User user;
         Pizza pizza;
         uint32 quantity;
-        uint32 total;
+        uint total;
         uint orderPlacedTime;
         uint orderReceivedTime;
         bool orderReceived;
@@ -61,13 +61,13 @@ contract CasaNostraPizza is Ownable, Pausable {
         pizzaList[1].name = "Chicago Town";
         pizzaList[1].description = "BBQ-marinert kyllingfilet, BBQ-saus, bacon, purre og rødløk. Toppes med bladpersille og nykvernet pepper etter steking.";
         pizzaList[1].imageHash = "http://clipart-library.com/images/qiBALM9aT.png";
-        pizzaList[1].price = 2;
+        pizzaList[1].price = 2 ether;
         pizzaList[1].exists = true;
 
         pizzaList[2].name = "Meat Feast";
         pizzaList[2].imageHash = "http://clipart-library.com/images/qiBALM9aT.png";
         pizzaList[2].description = "Fullverdig vegansk pizza sprinklet med smaksrik vegansk chili aioli. Toppet med pulled Oumph!, rødløk, tomat og purre.";
-        pizzaList[2].price = 3;
+        pizzaList[2].price = 3 ether;
         pizzaList[2].exists = true;
     }
 
@@ -90,7 +90,6 @@ contract CasaNostraPizza is Ownable, Pausable {
         userList[totalUsers].totalLogins += 1;
 
         emit newUserRegistered(_did);
-
     }
 
     /// @title placeOrder

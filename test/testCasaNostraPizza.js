@@ -52,7 +52,7 @@ contract('CasaNostraPizza', async (accounts) => {
             "did:notfound:21234",
             1,
             1,
-            { from: accounts[0], value: 5 });
+            { from: accounts[0], value: 2 * (10 ** 18) });
 
         truffleAssert.eventEmitted(result, "newUserRegistered");
         truffleAssert.eventEmitted(result, "orderPlaced");
@@ -93,7 +93,7 @@ contract('CasaNostraPizza', async (accounts) => {
             validDid,
             validPizzaId,
             1,
-            { from: accounts[0], value: 2 }
+            { from: accounts[0], value: 2 * (10 ** 18) }
         )
 
         truffleAssert.eventEmitted(result, "orderPlaced");
