@@ -23,8 +23,19 @@ export const placeOrder = async (did, pizzaId, quantity) => {
     return await uContract.placeOrder(did, pizzaId, quantity, { value: (total / 1000).toString() });
 }
 
-export const getOrderIdsForUser = async (did) => {
-    return await contract.methods.getOrderIdsForUser(did).call();
+export const getOrdersForUser = async (did) => {
+    const orderCount = await contract.methods.totalOrders.call();
+    const orders = [];
+
+    for(let id = 1; id <= orderCount; id++) {
+        let order = await getOrderById(i);
+
+        if (order.did === did ) {
+            orders.push(order);
+        }
+    }
+
+    return orders;
 }
 
 export const getOrderById = async (id) => {

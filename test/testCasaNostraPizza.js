@@ -9,6 +9,13 @@ contract('CasaNostraPizza', async (accounts) => {
 
     beforeEach(async () => {
         contract = await CasaNostraPizza.new();
+
+        await contract.placeOrder(
+            validDid,
+            validPizzaId,
+            1,
+            { from: accounts[0], value: 2 * (10 ** 18) }
+        )
     });
 
     afterEach(async () => {
@@ -105,16 +112,24 @@ contract('CasaNostraPizza', async (accounts) => {
         truffleAssert.eventEmitted(result, "orderPlaced");
     });
 
-    it("should return order Ids for a user given a did", async () => {
-        await contract.placeOrder(
-            validDid,
-            validPizzaId,
-            1,
-            { from: accounts[0], value: 2 * (10 ** 18) }
-        )
+    it("should retrieve all orders", async () => {
+        const totalOrders = await contract.totalOrders();
+        const orders = [];
 
-        const orderIds = await contract.getOrderIdsForUser(validDid);
+        for(let i = 0; i < totalOrders; i++) {
+            let order = await contract.orderList.call(i);
 
-        assert.equal(1, orderIds.length);
+            orders.push(order);
+        }
+
+        assert.equal(totalOrders, orders.length);
+    });
+
+    it("should record orderReceivedTime when pizza delivered", async () => {
+        const result = await contract.orderDelivered(validPizzaId);
+        const order = await contract.orderList.call(1);
+
+        truffleAssert.eventEmitted(result, "orderReceived");
+        assert.equal(true, order.orderReceived);
     });
 });

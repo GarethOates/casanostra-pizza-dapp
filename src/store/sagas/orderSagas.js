@@ -9,13 +9,9 @@ export function* orderSagas() {
 export function* getOrders(action) {
     yield put({ type: 'GETTING_ORDERS' })
 
-    const orderIdsForUser = yield call(getOrderIdsForUser, action.payload);
-    const orders = [];
-
-    for (let i = 0; i <= orderIdsForUser.length; i++) {
-        let order = yield call(getOrderById, i);
-
-        orders.push({
+    const ordersForUser = yield call(getOrdersForUser, action.payload);
+    const orders = ordersForUser.map(order => {
+        return {
             user: order.user,
             pizza: order.pizza,
             quantity: order.quantity,
@@ -23,10 +19,10 @@ export function* getOrders(action) {
             orderPlacedTime: order.orderPlacedTime,
             orderReceivedTime: order.orderReceivedTime,
             orderReceived: order.orderReceived
-        });
+        }
+    });
 
-        yield put({ type: 'GOT_ORDERS'})
-    }
+    yield put({ type: 'GOT_ORDERS', payload: orders });
 }
 
 export function* orderPizza(action) {

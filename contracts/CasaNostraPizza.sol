@@ -43,7 +43,8 @@ contract CasaNostraPizza is Ownable, Pausable {
     // Events
     event newUserRegistered(string did);
     event existingUserLoggedIn(string did);
-    event orderPlaced(uint orderId);
+    event orderPlaced(uint32 orderId);
+    event orderReceived(uint32 orderId);
     event balanceNowUpdated(uint256 newBalance);
 
     /// @title constructor
@@ -92,30 +93,17 @@ contract CasaNostraPizza is Ownable, Pausable {
         emit newUserRegistered(_did);
     }
 
-    /// @title getOrdersForUser
-    /// @dev Gets the number of orders a particular user has placed
-    /// @param _did Unique identifier of the user
-    function getOrderIdsForUser(string memory _did) public view returns (uint32[] memory orderIds) {
-        require(userIndex[_did] != 0, "Cannot fetch orders for unknown user");
-
-        uint32 index = 0;
-
-        for (uint32 i = 0; i < totalOrders; i++) {
-            if (keccak256(abi.encode(orderList[i].userDid)) == keccak256(abi.encode(_did))) {
-                orderIds[index] = i;
-                index++;
-            }
-        }
-    }
-
     /// @title placeOrder
     /// @dev Places an order for the user
     /// @param _did Unique identifier of the user
     /// @param _pizzaId The Id of the pizza the user has ordered
     /// @param _quantity Number of pizzas ordered
     /// @return bool Order Succeeded
-    function placeOrder(string memory _did, uint32 _pizzaId, uint32 _quantity)
-    public payable {
+    function placeOrder(
+        string memory _did,
+        uint32 _pizzaId,
+        uint32 _quantity
+    ) public payable {
         require(pizzaList[_pizzaId].exists, "No Pizza Found");
         require(_quantity > 0, "Must order at least 1 pizza");
         require(msg.value >= pizzaList[_pizzaId].price * _quantity, "Ether sent does not cover cost of order");
@@ -135,14 +123,33 @@ contract CasaNostraPizza is Ownable, Pausable {
         orderList[totalOrders].orderReceived = false;
 
         emit orderPlaced(totalOrders);
+        emit balanceNowUpdated(address(this).balance);
+    }
+
+    /// @title orderDelivered
+    /// @dev Function called when the user receives their pizza
+    /// @param _orderId the id of the order placed
+    function orderDelivered(uint32 _orderId) public {
+        require(orderList[_orderId].pizzaId != 0, "Order not found");
+
+        orderList[_orderId].orderReceived = true;
+        orderList[_orderId].orderReceivedTime = block.timestamp;
+
+        emit orderReceived(_orderId);
     }
 
     /// @dev Fallback function
-    function () external payable {}
+    function () external payable {
+        emit balanceNowUpdated(address(this).balance);
+    }
 
     /// @title Kill
     /// @dev Destroys the smart-contract and returns funds to owner
     function kill() external onlyOwner {
         selfdestruct(msg.sender);
+    }
+
+    function compareStrings(string memory a, string memory b) private pure returns (bool) {
+        return keccak256(abi.encodePacked(a)) == keccak256(abi.encodePacked(b));
     }
 }
