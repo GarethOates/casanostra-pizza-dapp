@@ -95,11 +95,6 @@ contract('CasaNostraPizza', async (accounts) => {
         )
     });
 
-    it("should not return order ids for an unknown user", async () => {
-        await truffleAssert.reverts(
-            contract.getOrderIdsForUser("did:invalid:1234")
-        )
-    });
 
     it("should accept a valid order", async () => {
         const result = await contract.placeOrder(
