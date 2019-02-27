@@ -1,5 +1,5 @@
 import { takeEvery, call, put } from "redux-saga/effects"
-import { placeOrder, getOrderById, getOrderIdsForUser } from '../../provider/casaNostraPizzaContract'
+import { placeOrder, getOrdersForUser } from '../../provider/casaNostraPizzaContract'
 
 export function* orderSagas() {
     yield takeEvery('GET_ORDERS', getOrders);

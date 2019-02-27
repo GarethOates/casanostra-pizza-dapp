@@ -28,7 +28,7 @@ export const getOrdersForUser = async (did) => {
     const orders = [];
 
     for(let id = 1; id <= orderCount; id++) {
-        let order = await getOrderById(i);
+        let order = await getOrderById(id);
 
         if (order.did === did ) {
             orders.push(order);
