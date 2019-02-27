@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onComponentDidMount: () => {
+        getPizzas: () => {
             dispatch({ type: 'GET_PIZZAS' });
         }
     }
@@ -40,7 +40,8 @@ const ShowPizzas = (props) => {
 
 class Pizza extends Component {
     componentDidMount() {
-        this.props.onComponentDidMount();
+        if (this.props.pizza.data.length === 0)
+            this.props.getPizzas();
     }
 
     render() {

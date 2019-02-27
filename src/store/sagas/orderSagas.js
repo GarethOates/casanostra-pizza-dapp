@@ -12,8 +12,8 @@ export function* getOrders(action) {
     const ordersForUser = yield call(getOrdersForUser, action.payload);
     const orders = ordersForUser.map(order => {
         return {
-            user: order.user,
-            pizza: order.pizza,
+            userDid: order.userDid,
+            pizzaId: order.pizzaId,
             quantity: order.quantity,
             total: order.total,
             orderPlacedTime: order.orderPlacedTime,

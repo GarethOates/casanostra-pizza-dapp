@@ -34,7 +34,9 @@ export const getOrdersForUser = async (did) => {
     for(let id = 1; id <= orderCount; id++) {
         let order = await getOrderById(id);
 
-        if (order.did === did ) {
+        order.userDid = order.userDid.replace(/'/g, "");
+
+        if (order.userDid === did ) {
             orders.push(order);
         }
     }
