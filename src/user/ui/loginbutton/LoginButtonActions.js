@@ -25,7 +25,7 @@ export function loginUser() {
         return browserHistory.push(decodeURIComponent(currentLocation.query.redirect))
       }
 
-      return browserHistory.push('/order')
+      return browserHistory.push('/pizza')
     })
   }
 }

@@ -15,13 +15,15 @@ import './App.css'
 class App extends Component {
   render() {
     const OnlyAuthLinks = VisibleOnlyAuth(() =>
-      <span>
+    <span>
         <li className="pure-menu-item">
           <Link to="/profile" className="pure-menu-link">Account</Link>
+        </li>
+        <li>
           <Link to="/order" className="pure-menu-link">Your Orders</Link>
         </li>
         <LogoutButtonContainer />
-      </span>
+    </span>
     )
 
     const OnlyGuestLinks = HiddenOnlyAuth(() =>
@@ -33,7 +35,7 @@ class App extends Component {
     return (
       <div className="App">
         <nav className="navbar pure-menu pure-menu-horizontal">
-          <Link to="/order" className="pure-menu-heading pure-menu-link">Casa Nostra Pizza</Link>
+          <Link to="/pizza" className="pure-menu-heading pure-menu-link">Casa Nostra Pizza</Link>
           <ul className="pure-menu-list navbar-right">
             <OnlyGuestLinks />
             <OnlyAuthLinks />

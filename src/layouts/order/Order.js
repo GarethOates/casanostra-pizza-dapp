@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onComponentDidMount: () => {
-            dispatch({ type: 'GET_ORDERS', payload: this.props.user.data.did });
+        onComponentDidMount: (did) => {
+            dispatch({ type: 'GET_ORDERS', payload: did });
         }
     }
 }
@@ -32,7 +32,7 @@ const ShowOrders = (props) => {
 
 class Order extends Component {
     componentDidMount() {
-        this.props.onComponentDidMount();
+        this.props.onComponentDidMount(this.props.user.data.did);
     }
 
     render() {
@@ -42,7 +42,7 @@ class Order extends Component {
                     <div className="pure-u-1-1">
                         <h1>Casa Nostra Pizzas</h1>
                         <h3>Welcome back, {this.props.user.data.name}</h3>
-                        { this.props.pizza.isLoading ?
+                        { this.props.order.isLoading ?
                             <ShowLoading /> :
                             <ShowOrders />
                         }

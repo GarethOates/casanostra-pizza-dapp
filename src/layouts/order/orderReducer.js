@@ -13,7 +13,8 @@ const orderReducer = (state = initialState, action) => {
 
     if (action.type === 'GOT_ORDERS') {
         return Object.assign({}, state, {
-            data: action.payload
+            data: action.payload,
+            isLoading: false
         })
     }
 
