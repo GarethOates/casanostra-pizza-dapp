@@ -12,10 +12,10 @@ gets their money back.
 
 ## Basic workflow
 
-* User logs into app using uPort
-* User clicks "Order Now" to order a pizza
-* The order is stored on the blockchain
-* A QR code is generated for the driver to show to the customer (manually at first)
-* When scanned, the QR code triggers a transaction to the orderReceived function.
-* The timer stops and calculates the delivery time.  If the delivery time is over 30 minutes, the
-total value of the users order is refunded to them.
+- [x] User logs into app using uPort
+- [x] User clicks "Order" to order a pizza
+- [x] The order is stored on the blockchain
+- [ ] A QR code is generated for the driver to show to the customer (manually at first)
+- [ ] When scanned, the QR code triggers a transaction to the orderReceived function.
+- [ ] The timer stops and calculates the delivery time.
+- [ ] If the delivery time is over 30 minutes, the total value of the users order is refunded to them.
