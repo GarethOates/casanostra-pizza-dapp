@@ -1,7 +1,6 @@
 import { takeEvery, call, put } from 'redux-saga/effects'
 import { loadToppings } from '../../provider/casaNostraPizzaContract'
 
-
 export function* toppingsSaga() {
     yield takeEvery('GET_TOPPINGS', getToppings);
 }
