@@ -1,8 +1,10 @@
 import { browserHistory } from 'react-router'
 import { createStore, applyMiddleware, compose } from 'redux'
 import { routerMiddleware } from 'react-router-redux'
+
 import reducer from './reducer'
 import createSagaMiddleware from "redux-saga"
+import thunkMiddleware from 'redux-thunk'
 import rootSaga from './sagas/rootSaga'
 
 // Setup Saga middelware
@@ -17,6 +19,7 @@ const store = createStore(
   composeEnhancers(
     applyMiddleware(
       sagaMiddleware,
+      thunkMiddleware,
       routingMiddleware
     )
   )

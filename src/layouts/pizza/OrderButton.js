@@ -25,7 +25,6 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-
 class OrderButton extends Component {
     render() {
         return (

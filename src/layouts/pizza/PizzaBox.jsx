@@ -51,7 +51,7 @@ const pizzaBox = ({ id, image, name, description, price}) => {
             <img src={image} alt="pizza" /><br/>
             <div className="description">{description}</div>
             <div className="price">Ξ{price / 10 ** 18}</div>
-            <OrderButton  id={id}>Order Now</OrderButton>
+            <OrderButton  id={id} />
         </StyledPizzaBox>
     )
 }

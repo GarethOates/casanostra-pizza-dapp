@@ -43,3 +43,13 @@ export const getOrdersForUser = async (did) => {
 
     return orders;
 }
+
+export const loadToppings = () => {
+    return [
+        { name: 'Mushrooms', price: 0.005 },
+        { name: 'Peppers', price: 0.005 },
+        { name: 'Bacon Bits', price: 0.010 },
+        { name: 'Chorizo', price: 0.010 },
+        { name: 'Pepperoni', price: 0.010 }
+    ]
+}
