@@ -47,9 +47,6 @@ contract CasaNostraPizza is Ownable, Pausable {
     event orderReceived(uint32 orderId);
     event balanceNowUpdated(uint256 newBalance);
 
-    /// @title constructor
-    /// @dev Constructor
-    /// @dev Initialise dummy user and pizza
     constructor() public {
         totalUsers = 1; // 1 dummy user hard-coded
         totalPizzas = 2; // 2 dummy pizza hard-coded
@@ -72,9 +69,6 @@ contract CasaNostraPizza is Ownable, Pausable {
         pizzaList[2].exists = true;
     }
 
-    /// @title userLoggedIn
-    /// @dev User logged in
-    /// @param _did Unique identifier for user
     function userLoggedIn(string memory _did) public {
         if (userIndex[_did] != 0) {
             userList[userIndex[_did]].totalLogins++;
@@ -93,12 +87,6 @@ contract CasaNostraPizza is Ownable, Pausable {
         emit newUserRegistered(_did);
     }
 
-    /// @title placeOrder
-    /// @dev Places an order for the user
-    /// @param _did Unique identifier of the user
-    /// @param _pizzaId The Id of the pizza the user has ordered
-    /// @param _quantity Number of pizzas ordered
-    /// @return bool Order Succeeded
     function placeOrder(
         string memory _did,
         uint32 _pizzaId,
@@ -126,9 +114,6 @@ contract CasaNostraPizza is Ownable, Pausable {
         emit balanceNowUpdated(address(this).balance);
     }
 
-    /// @title orderDelivered
-    /// @dev Function called when the user receives their pizza
-    /// @param _orderId the id of the order placed
     function orderDelivered(uint32 _orderId) public {
         require(orderList[_orderId].pizzaId != 0, "Order not found");
 
@@ -138,13 +123,10 @@ contract CasaNostraPizza is Ownable, Pausable {
         emit orderReceived(_orderId);
     }
 
-    /// @dev Fallback function
     function () external payable {
         emit balanceNowUpdated(address(this).balance);
     }
 
-    /// @title Kill
-    /// @dev Destroys the smart-contract and returns funds to owner
     function kill() external onlyOwner {
         selfdestruct(msg.sender);
     }
